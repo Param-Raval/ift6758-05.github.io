@@ -209,3 +209,44 @@ Knowing these, we can now write a bit of code to turn the json data we downloade
 Cleaning up the column names and making the data a bit more tidy (such as making the coordinate strings into floats), we get the following dataframe).
 
 
+Q2 Widget
+
+Q5
+
+
+![image](plot1.png)
+
+plot 1 discussion:<br>
+
+This chart shows the ratio of makes and misses for each shot type, as well as the shot frequency.
+
+From this chart, we see that wrist shots are by far the most common type of shot taken across the league. Wrist shots are very versatile. They are effective from a wide range of distances, are quick to execute, and very accurate, hence the high rate of utilization.
+
+Although it's difficult to precisely discern from this visualization, it appears that the tip-in and deflected shots have the highest goal percentages, and could therefore be considered the most dangerous type of shot. However, neither of these are really a "type" of shot, per se. The former are redirections of the puck off another player's stick, and the later is the result of an unintentional deflection off a player's body. The most dangerous "true" shot type from this graph is either the backhand or snap shot.
+
+This figure was chosen because it does a good job describing shot effectiveness as well as shot volume. Although it is simple, it demonstrates well the distribution of shot types and goals across the league.<br>
+
+![image](plot2.png)
+
+plot 2 discussion:<br>
+
+This figure demonstrates the relationship between shot distance and shot success over successive seasons. For each season, a histogram was generated where each bin shows the number of missed shots taken (orange) and goals (cyan) between a range of distances.<br>
+
+As we can see from the graph, the success rate of a shot climbs from a distance of 0 to about 8 or 9 feet. It then falls as distance increases. This general trend is stable over the years. 
+
+The only glaring distinction between the graphs is the lower overall shot volume in the 2020-2021 season. However, this mostly attributable to the shortening of the season due to the Covid-19 Pandemic.
+
+This figure was chosen because it effectively demonstrates the most and least effective distances (in terms of goal percentage) for taking shots, and how this is stable over the years.
+
+
+
+![image](plot3.png)
+plot 3 discussion: <br>
+
+This plot is similar to plot two, however it shows the relationship between shot distance and goal percentage for each shot type. Each line shows how the goal percentage changes as the shot distance increases. The shots were binned by distance ranges of 5ft and the midpoints were plotted.
+
+There is no black or white answer to the question: "What is the most dangerous type of shot". The answer, as is often the case, is: "It depends".
+
+All of the shots are most effective at their closest range. Slap-shots and deflections stand out most in this regard, with goal percentages approaching 61 and 57 percent respectively from the range of 0-5ft. While all shots this season were most effective when taken close to the goal, only deflections and tip-ins surpass a goal percentange of 20 at a range of 20ft or greater. However, as stated previously, these are not really intentional shot types. Snap and slap shots are the most effective shots from a range of 20-40ft. After this distance, the results get harder to interpretate, as the plot is quite spiky. This is due to a lower sample size for many types of shots from longer ranges.
+
+The exception to this is the wrist-shot. The wrist-shot is the most frequent shot type, and it sees a notable uptick in goal percentage from the distance range of 65-75ft.
