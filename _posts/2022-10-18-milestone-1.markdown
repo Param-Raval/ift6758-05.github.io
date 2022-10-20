@@ -1,16 +1,86 @@
 ---
 layout: post
-title:  "Welcome to Jekyll!"
+title:  "Milestone 1"
 date:   2022-10-18 16:00:35 -0400
 categories: jekyll update
 ---
-###  IFT6758 Batch 5 Milestone Project
+#  IFT6758 Batch 5 Milestone Project
 
 ## Data Acquisition 
 
+
+### NHL API Usage
+
+First, we need to understand how to download the data from the API.
+Most importantly, we need the gameID, before we can request it
+```
+import json
+import requests
+def getGameData(gameID=gameID):
+    endpoint = 'https://statsapi.web.nhl.com/api/v1/game/{}/feed/live/'.format(gameID)
+    data = requests.get(endpoint).json()
+    return data
+```
+### Structure of Game IDs
+
+The first 4 digits identify the season of the game (ie. 2017 for the 2017-2018 season).<br> 
+The next 2 digits give the type of game, where:<br>
+    01 = preseason,<br>
+    02 = regular season,<br> 
+    03 = playoffs,<br>
+    04 = all-star.<br> 
+The final 4 digits identify the specific game number. For regular season and preseason games, this ranges from 0001 to the number of games played. (1271 for seasons with 31 teams (2017 and onwards) and 1230 for seasons with 30 teams).
+For playoff games, the 2nd digit of the specific number gives the round of the playoffs, the 3rd digit specifies the matchup, and the 4th digit specifies the game (out of 7).
+
+To construct the gameID, all we need to do is format that information, which we can then make a function for:
+```
+gameID = nhlData.getGameId(season=2017, gameType=2,game=1)
+'''
+    season: Represented by the year, i.e 2017 for the season 2017 - 2018
+
+    gameType: Indicates the type of game for which you want the game ID for, where
+        1 = preseason, 
+        2 = regular season, 
+        3 = playoffs,
+        4 = all-star.
+
+    game: Indicates the specific game number 
+        For non playoff games:
+            goes up from 1 to 1271 [if #teams == 31, only from 2017] or 1230 [if #teams == 30]
+        Playoff games:
+            let abcd be the game number where,
+                b represents the round of playoffs
+                c represents the matchup
+                d specifies the game # out of 7
+'''
+```
+
+Now that we know the game ID, we can write a function that loops over the seasons and gametypes to create our dataset:
+```
+def getDataSet(options):
+    for season in options['seasons']:
+        if season < 2017:
+            maxGames = 1230
+        else:
+            maxGames = 1271
+        for game in range(1, maxGames):
+            getGameId(season, options['gameType'], game)
+                    
+```
+We can now build the dataset by calling:
+```
+nhlData.getDataSet(options={
+    'fromSeason': 2016,
+    'toSeason': 2021,
+    'gameType': 2,
+    'max': 4
+})
+```
+
+
 ## Cleaning the Data
 
-After saving all of the data, we only need to work with a portion of it. As such, we will need to look at the parts that are interesting.
+After saving all of the json data, we only need to work with a portion of it. As such, we will need to look at the parts that are interesting.
 
 Looking at a sample game, we should probably keep track of the team ids, which are found like so:
 
@@ -113,6 +183,18 @@ col_names_goal = ['result/emptyNet', 'result/strength/code']
 ```
 
 Since only goals will have some information, while shots that miss don't have the strength and emptyNet information.
+
+Although strength is only there for the goals, and doesn't indicate the number of players on the ice, we can calculate this by looking at the penalties in every game. By looking at the timestamps and adding our handcrafted rulings, we can know how many players are on the ice at any given time, and hence play!
+
+If we cared about some other features, such as turnover-goals, rebounds, shot-off-the-rush, we could look into adding some more information.
+
+Turnovers:
+- We could look at whether any goal was made after a giveaway and takeaway event was made.
+Rebounds:
+- We could add this by looking at whether or not the goal was made soon after a shot was made
+Buzzer-beaters:
+- By looking at the PERIOD-END events, we can know whether or not the shot was made close to when the buzzer was going to sound! Are teams better at scoring under the high-pressure environments?
+
 
 Knowing these, we can now write a bit of code to turn the json data we downloaded into a pandas dataframe with the column names that we wanted!
 
