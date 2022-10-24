@@ -236,6 +236,7 @@ visDf = None # Dataframe representing the events of a particular game
 ```
 
 Instantiate the appropriate widget controls as required. In this instance, we are using: <br>
+
     * The Play widget to automatically scrub through the events of a particular game in a specified interval.
     * Two IntSlider widgets to scrub through the gameIDs and the events of a selected game, the selection is then used to index the game and the event from the dataset.
     * jslink is used to establish the relationship beteween the autoplay and the slider to be linked with, in this case it is linked with the events slider.
@@ -289,6 +290,7 @@ display(out)
 ```
 
 Specify the callback functions and set the event handlers for the widget controls for making it interactive. Doing this will execute the callback function specfied for respective actions on the widget controls. In this instance:<br>
+
     * Scrubbing thtough the game index and selecting one will instantiate a dataframe with the events of that particular game.
     * Scrubbing through the event index and selecting one will plot the puck at the specified coordinates of the event on the ice rink image.
     * Toggling the isPlayoff will result in switching between the regular games and the playoff games.
