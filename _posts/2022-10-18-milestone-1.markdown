@@ -212,7 +212,117 @@ Knowing these, we can now write a bit of code to turn the json data we downloade
 Cleaning up the column names and making the data a bit more tidy (such as making the coordinate strings into floats), we get the following dataframe).
 
 
-Q2 Widget
+## Q2 Interactive Debugging Tool
+
+This tool allows the user to visualise the events of the desired game. The tool makes it convenient for the user by allowing the user to scrub through the list of games and their events, with the ability to toggle between regular games / playoff games.<br>
+There might be events where coordinates for the puck aren't available where visualising the event doesn't make sense, in such cases the tool prints the event data.<br>
+This tool also supports playing through the list of events, where the events of the selected game are visualised in sequence at a specified interval between events.<br>
+
+![image](idt1.png)
+
+### Creating an interactive visualisation
+Begin with reading the regular games dataset and the playoff games dataset into the memory, along with initialising the list of respective gameIDs for referencing the events of a particular game.
+```python
+# Reading the datasets
+gameData = pd.read_csv('dataset.csv', index_col=0)
+playoffData = pd.read_csv('playoff_game_plays.csv', index_col=0)
+
+# Listing the game IDs for indexing the events of a particular game
+gameIDs = gameData['game_id'] 
+playoffGameIDs = playoffData['game_id']
+
+baseImage = 'nhl.png' # Path of the rink image
+visDf = None # Dataframe representing the events of a particular game
+```
+
+Instantiate the appropriate widget controls as required. In this instance, we are using:
+    - The Play widget to automatically scrub through the events of a particular game in a specified interval.
+    - Two IntSlider widgets to scrub through the gameIDs and the events of a selected game, the selection is then used to index the game and the event from the dataset.
+    - jslink is used to establish the relationship beteween the autoplay and the slider to be linked with, in this case it is linked with the events slider.
+    - A checkbox to toggle between the regular games and the playoff games.
+    - A reference to the cell output to have granular control over it, such as capturing the output, clearing the output on demand, etcetera.
+```python
+# IPython widget control to play / pause the scrubbing of events
+play = Play(
+    value=0,
+    min=0,
+    step=1,
+    interval=2000,
+    description="Play",
+    disabled=False
+)
+
+# IPython widget to scrub through the list of games
+gameSlider = IntSlider(
+    value=0,
+    min=0,
+    max=len(gameIDs)-1,
+    step=1,
+    description='Game Index:',
+    disabled=False,
+    continuous_update=False,
+    orientation='horizontal',
+    readout=True,
+    readout_format='d')
+
+# IPython widget to scrub through the events of a particular game
+event = IntSlider(value=0,
+                 min=0,
+                 step=1,
+                 description='Event Index: ',
+                 disabled=False,
+                continuous_update=False,
+                orientation='horizontal',
+                readout=True,
+                readout_format='d')
+
+isPlayoff = Checkbox(description="Is Playoff?")
+
+jslink((play, 'value'), (event, 'value')) # Establishes the play / pause control with the event slider to automate the scrubbing of events
+display(isPlayoff)
+display(gameSlider, HBox([play, event])) # Display the IPython widget controls
+
+
+# Configuring the widget output
+out = Output() 
+display(out)
+```
+
+Specify the callback functions and set the event handlers for the widget controls for making it interactive. Doing this will execute the callback function specfied for respective actions on the widget controls. In this instance:
+    - Scrubbing thtough the game index and selecting one will instantiate a dataframe with the events of that particular game
+    - Scrubbing through the event index and selecting one will plot the puck at the specified coordinates of the event on the ice rink image.
+    - Toggling the isPlayoff will result in switching between the regular games and the playoff games
+```python
+@out.capture()
+def callback(gameID):
+    global visDf
+    visDf = gameData[gameData['game_id'] == gameIDs[gameID['new']]] # Fetching the events of a particular game
+
+@out.capture()
+def call(change):
+    isPlayoff = change
+    
+@out.capture()
+def plot_event(e):
+    out.clear_output()
+    try:
+        # Plotting the event to visualise it
+        event_ = visDf.iloc[e['new'], :]
+        img = image.imread(baseImage)
+        fig, ax = plt.subplots(figsize=(9,4))
+        ax.imshow(img, extent=[-100, 100, 42.5, -42.5])
+        plt.plot((event_['x']), (event_['y']), marker='o', color="black")
+        plt.show()
+    except IndexError:
+        print('End of events')
+    except:
+        print(event_)
+
+# Callbacks for the widget controls
+gameSlider.observe(callback, names=['value'])
+isPlayoff.observe(call, names=['value'])
+event.observe(plot_event, names=['value'])
+```
 
 Q5
 
