@@ -218,7 +218,7 @@ This tool allows the user to visualise the events of the desired game. The tool 
 There might be events where coordinates for the puck aren't available where visualising the event doesn't make sense, in such cases the tool prints the event data.<br>
 This tool also supports playing through the list of events, where the events of the selected game are visualised in sequence at a specified interval between events.<br>
 
-![image](idt1.png)
+![image](/assets/images/idt1.png)
 
 ### Creating an interactive visualisation
 Begin with reading the regular games dataset and the playoff games dataset into the memory, along with initialising the list of respective gameIDs for referencing the events of a particular game.
@@ -331,7 +331,7 @@ event.observe(plot_event, names=['value'])
 Q5
 
 
-![image](plot1.png)
+![image](/assets/images/plot1.png)
 
 plot 1 discussion:<br>
 
@@ -343,7 +343,7 @@ Although it's difficult to precisely discern from this visualization, it appears
 
 This figure was chosen because it does a good job describing shot effectiveness as well as shot volume. Although it is simple, it demonstrates well the distribution of shot types and goals across the league.<br>
 
-![image](plot2.png)
+![image](/assets/images/plot2.png)
 
 plot 2 discussion:<br>
 
@@ -357,7 +357,7 @@ This figure was chosen because it effectively demonstrates the most and least ef
 
 
 
-![image](plot3.png)
+![image](/assets/images/plot3.png)
 plot 3 discussion: <br>
 
 This plot is similar to plot two, however it shows the relationship between shot distance and goal percentage for each shot type. Each line shows how the goal percentage changes as the shot distance increases. The shots were binned by distance ranges of 5ft and the midpoints were plotted.
