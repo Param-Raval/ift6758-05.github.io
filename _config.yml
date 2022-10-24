@@ -22,8 +22,8 @@ title: IFT6758 Data Science Batch 05
 email: datascience_is_cool@mila
 description: >- # this means to ignore newlines until "baseurl:"
   This is the blogpost for our milestone project for IFT6758, Data Science course.
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
+# baseurl: "" # the subpath of your site, e.g. /blog
+url: "https://ift6758-05.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: jekyllrb
 github_username:  jekyll
 
